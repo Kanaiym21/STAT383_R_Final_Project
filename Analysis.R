@@ -7,12 +7,6 @@ data <- read.csv("student_lifestyle_dataset 2.csv")
 glimpse(data)
 summary(data)
 
-#We have 3 questions to answer, so we will need new variables
-#Ratio of social hours to study hours
-data <- data %>%
-  mutate(Social_Study_Ratio = Social_Hours_Per_Day / Study_Hours_Per_Day)
-summary(data$Social_Study_Ratio)
-
 #In the dataset, stress levels(low, moderate, high), so we turn it to numeric values
 data <- data %>%
   mutate(
@@ -27,21 +21,14 @@ data <- data %>%
 table(data$Stress_Level, data$Stress_Level_Num)
 
 #Question 1: How does the ratio of social hours to study hours impact GPA?
-#Model: GPA = β0 + β1 * Social_Study_Ratio + error
-model_question1 <- lm(GPA ~ Social_Study_Ratio, data = data)
+#Model: GPA=β0+β1(Social_Hours)+β2(Study_Hours)+ε
+# Multiple regression
 
-# View detailed results
-summary(model_question1)
+model_question1_multi <- lm(
+  GPA ~ Social_Hours_Per_Day + Study_Hours_Per_Day,data = data
+)
 
-#Plot of Question 1
-ggplot(data, aes(x = Social_Study_Ratio, y = GPA)) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(
-    title = "GPA vs Social/Study Hours Ratio",
-    x = "Social Hours / Study Hours",
-    y = "GPA"
-  )
+summary(model_question1_multi)
 
 #Question 2: How does the amount of time a student spends sleeping affect their GPA?
 # Model: GPA = β0 + β1 * Sleep_Hours_Per_Day + error
