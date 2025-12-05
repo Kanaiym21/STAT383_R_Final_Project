@@ -20,49 +20,11 @@ data <- data %>%
 
 table(data$Stress_Level, data$Stress_Level_Num)
 
-#Question 1: How does the ratio of social hours to study hours impact GPA?
-#Model: GPA=β0+β1(Social_Hours)+β2(Study_Hours)+ε
+#Question: How does the amount of time a student spends socializing, studying, sleeping, and student's stress level affect their GPA?
+#Model: GPA=β0+β1(Social_Hours)+β2(Study_Hours)+β3(Sleep_Hours)+β4(Stress_Level)+ε
 # Multiple regression
-
-model_question1_multi <- lm(
-  GPA ~ Social_Hours_Per_Day + Study_Hours_Per_Day,data = data
+model_question_multi <- lm(
+  GPA ~ Social_Hours_Per_Day + Study_Hours_Per_Day + Sleep_Hours_Per_Day + Stress_Level_Num ,data = data
 )
 
-summary(model_question1_multi)
-
-#Question 2: How does the amount of time a student spends sleeping affect their GPA?
-# Model: GPA = β0 + β1 * Sleep_Hours_Per_Day + error
-model_question2 <- lm(GPA ~ Sleep_Hours_Per_Day, data = data)
-
-# View detailed results
-summary(model_question2)
-
-#Plot of Question 2
-ggplot(data, aes(x = Sleep_Hours_Per_Day, y = GPA)) +
-  geom_point(alpha = 0.6) +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(
-    title = "GPA vs Sleep Hours Per Day",
-    x = "Sleep Hours Per Day",
-    y = "GPA"
-  )
-
-#Question 3: How does the amount of time a student spends studying impact their mental well-being?
-# Model: Stress_Level_Num = β0 + β1 * Study_Hours_Per_Day + error
-model_question3 <- lm(Stress_Level_Num ~ Study_Hours_Per_Day, data = data)
-
-# View detailed results
-summary(model_question3)
-
-#Plot of Question 3
-ggplot(data, aes(x = Study_Hours_Per_Day, y = Stress_Level_Num)) +
-  geom_jitter(width = 0.1, height = 0.05, alpha = 0.6) +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(
-    title = "Stress Level vs Study Hours Per Day",
-    x = "Study Hours Per Day",
-    y = "Stress Level (1 = Low, 3 = High)"
-  )
-
-
-
+summary(model_question_multi)
